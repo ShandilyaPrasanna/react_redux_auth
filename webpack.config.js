@@ -5,7 +5,7 @@ var path = require('path');
 module.exports = {
   entry: [
 
-  path.join(__dirname,'/client/index.js')
+  path.join(__dirname,'/client/js/Index.js')
   ],
   devtool: debug ? "inline-sourcemap" : null,
   
@@ -23,14 +23,12 @@ module.exports = {
       }
     ]
   },
-
   output: {
     path: __dirname + "/server/",
-    filename: "bundle.js",
+    filename: "bundle.js"
     
   },
   plugins: debug ? [] : [
-    
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
