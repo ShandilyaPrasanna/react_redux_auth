@@ -3,6 +3,7 @@ import Timezone from './../../data/Timezone';
 import map from 'lodash/map';
 import axios from 'axios';
 import classnames from 'classnames';
+import validateInput from './../../../server/Validations/Signupform';
 
 class SignupForm extends React.Component{
 	constructor(props){
@@ -27,20 +28,28 @@ onChange(e){
 	this.setState({[e.target.name]:e.target.value});
 }
 
+isValid(){
+const {errors,isValid}=validateInput(this.state);
+	if(!isValid)
+	{
+		console.log("error");
+		this.setState({errors});
+	}
+return isValid;
+}
+
 onSubmit(e){
 e.preventDefault();
+if(this.isValid())
+{
 this.setState({errors:{},isLoading:true});
-console.log(this.state);
 axios.post('/routes/users',this.state).catch((error) => {
     console.log(error.message);
     console.log(error.response); // Only available if response was received from the server
-  this.setState({errors:error.response.data,isLoading:false});
-  console.log(this.state.errors);
-
-  
-
-  });;
-	
+  this.setState({errors:error.response.data});
+ });
+  this.setState({errors:{},isLoading:false});
+}	
 }
 
 	render(){
