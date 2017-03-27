@@ -1,6 +1,8 @@
 import React from 'react';
 import Timezone from './../../data/Timezone';
 import map from 'lodash/map';
+import axios from 'axios';
+import classnames from 'classnames';
 
 class SignupForm extends React.Component{
 	constructor(props){
@@ -10,7 +12,9 @@ class SignupForm extends React.Component{
        	Email:'',
        	Password:'',
        	Password_Confirmation:'',
-       	Select_Timezones:''
+       	Select_Timezones:'',
+       	errors:{},
+       	isLoading:false
 
        }
 this.onChange=this.onChange.bind(this);
@@ -25,11 +29,22 @@ onChange(e){
 
 onSubmit(e){
 e.preventDefault();
+this.setState({errors:{},isLoading:true});
 console.log(this.state);
+axios.post('/routes/users',this.state).catch((error) => {
+    console.log(error.message);
+    console.log(error.response); // Only available if response was received from the server
+  this.setState({errors:error.response.data,isLoading:false});
+  console.log(this.state.errors);
+
+  
+
+  });;
+	
 }
 
 	render(){
-
+		const error=this.state.errors;
 		const timezones=map(Timezone,(val,key)=>
 <option key={val} value={val}>{key}</option>
 			);
@@ -40,7 +55,7 @@ console.log(this.state);
 <h1> Register Here ........</h1>
 
 
-<div className="form-group">
+<div className={classnames("form-group",{'has-error':error.username})}>
  <label className="control-label">Username</label>
  <input 
  type="text" 
@@ -48,9 +63,10 @@ console.log(this.state);
  name="username" 
  className="form-control"
  onChange={this.onChange}/>
+ {error.username && <span className="help-block">{error.username}</span>}
  </div>
 
- <div className="form-group">
+ <div className={classnames("form-group",{'has-error':error.Email})}>
  <label className="control-label">Email</label>
  <input 
  type="text" 
@@ -58,10 +74,11 @@ console.log(this.state);
  name="Email" 
  className="form-control"
  onChange={this.onChange}/>
+  { error.Email && <span className="help-block">{error.Email}</span> }
  </div>
 
 
-<div className="form-group">
+<div className={classnames("form-group",{'has-error':error.Password})}>
  <label className="control-label">Password</label>
  <input 
  value={this.state.Password}
@@ -69,9 +86,10 @@ console.log(this.state);
  name="Password" 
  className="form-control"
  onChange={this.onChange}/>
+  {error.Password && <span className="help-block">{error.Password}</span>}
  </div>
 
-<div className="form-group">
+<div className={classnames("form-group",{'has-error':error.Password_Confirmation})}>
  <label className="control-label">Password Confirmation</label>
  <input 
  type="text" 
@@ -79,9 +97,10 @@ console.log(this.state);
  name="Password_Confirmation" 
  className="form-control"
  onChange={this.onChange}/>
+  {error.Password_Confirmation && <span className="help-block">{error.Password_Confirmation}</span>}
  </div>
 
-<div className="form-group">
+<div className={classnames("form-group",{'has-error':error.Select_Timezones})}>
  <label className="control-label">Timezone</label>
  <select
  type="text" 
@@ -93,11 +112,12 @@ console.log(this.state);
 <option value="" disabled>Select Your Timezone</option>
 {timezones}
 </select>
+ {error.Select_Timezones && <span className="help-block">{error.Select_Timezones}</span>}
  </div>
 
 
  <div className="form-group">
- <button className="btn btn-primary btn-lg" onClick={this.onSubmit}>SignUp</button>
+ <button disabled={this.state.isLoading} className="btn btn-primary btn-lg" onClick={this.onSubmit}>SignUp</button>
  </div>
 
 </form>
