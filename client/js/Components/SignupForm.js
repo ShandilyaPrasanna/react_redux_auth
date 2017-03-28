@@ -4,6 +4,9 @@ import map from 'lodash/map';
 import axios from 'axios';
 import classnames from 'classnames';
 import validateInput from './../../../server/Validations/Signupform';
+import TextField from './common/TextField';
+
+
 
 class SignupForm extends React.Component{
 	constructor(props){
@@ -60,54 +63,41 @@ axios.post('/routes/users',this.state).catch((error) => {
 		return(
 
 
-<form>
+<form onSubmit={this.onSubmit}>
 <h1> Register Here ........</h1>
 
+ <TextField 
+ type="text"
+ label="Username" 
+ field="username" 
+ value={this.state.username} 
+ onChange={this.onChange} 
+ error={error.username} />
 
-<div className={classnames("form-group",{'has-error':error.username})}>
- <label className="control-label">Username</label>
- <input 
- type="text" 
- value={this.state.username}
- name="username" 
- className="form-control"
- onChange={this.onChange}/>
- {error.username && <span className="help-block">{error.username}</span>}
- </div>
+ <TextField 
+ type="Email"
+ label="Email" 
+ field="Email" 
+ value={this.state.Email} 
+ onChange={this.onChange} 
+ error={error.Email} />
 
- <div className={classnames("form-group",{'has-error':error.Email})}>
- <label className="control-label">Email</label>
- <input 
- type="text" 
- value={this.state.Email}
- name="Email" 
- className="form-control"
- onChange={this.onChange}/>
-  { error.Email && <span className="help-block">{error.Email}</span> }
- </div>
+<TextField 
+type="text"
+label="Password" 
+field="Password" 
+value={this.state.Password} 
+onChange={this.onChange} 
+error={error.Password}/>
 
+<TextField 
+type="text"
+label="Password_Confirmation" 
+field="Password_Confirmation" 
+value={this.state.Password_Confirmation} 
+onChange={this.onChange} 
+error={error.Password_Confirmation}/>
 
-<div className={classnames("form-group",{'has-error':error.Password})}>
- <label className="control-label">Password</label>
- <input 
- value={this.state.Password}
- type="text" 
- name="Password" 
- className="form-control"
- onChange={this.onChange}/>
-  {error.Password && <span className="help-block">{error.Password}</span>}
- </div>
-
-<div className={classnames("form-group",{'has-error':error.Password_Confirmation})}>
- <label className="control-label">Password Confirmation</label>
- <input 
- type="text" 
- value={this.state.Password_Confirmation}
- name="Password_Confirmation" 
- className="form-control"
- onChange={this.onChange}/>
-  {error.Password_Confirmation && <span className="help-block">{error.Password_Confirmation}</span>}
- </div>
 
 <div className={classnames("form-group",{'has-error':error.Select_Timezones})}>
  <label className="control-label">Timezone</label>
