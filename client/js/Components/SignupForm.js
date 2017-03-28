@@ -5,7 +5,7 @@ import axios from 'axios';
 import classnames from 'classnames';
 import validateInput from './../../../server/Validations/Signupform';
 import TextField from './common/TextField';
-
+import {hashHistory} from 'react-router';
 
 
 class SignupForm extends React.Component{
@@ -46,7 +46,11 @@ e.preventDefault();
 if(this.isValid())
 {
 this.setState({errors:{},isLoading:true});
-axios.post('/routes/users',this.state).catch((error) => {
+axios.post('/routes/users',this.state).then(()=>
+{
+console.log("SUCCESS");
+hashHistory.push('/');
+}).catch((error) => {
     console.log(error.message);
     console.log(error.response); // Only available if response was received from the server
   this.setState({errors:error.response.data});
