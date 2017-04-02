@@ -4,7 +4,11 @@ import {Router,Route,hashHistory,IndexRoute} from 'react-router'; //NOT working 
 import App from './Components/App';
 import Signup from './Components/Signup';
 import Welcome from './Components/Welcome';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import allReducer from './reducer/Combine';
 
+const store=createStore(allReducer);
 
 class Index extends React.Component{
  render()
@@ -28,13 +32,13 @@ class Index extends React.Component{
 const app=document.getElementById('app');
 
 Reactdom.render(
-
+<Provider store={store}>
 <Router history={hashHistory}>
  <Route path="/" component={Index} >
 <IndexRoute component={Welcome}></IndexRoute>
  <Route path="/Signup" component={Signup}></Route>
  </Route>
 </Router>
-
+</Provider>
 ,app);  
 

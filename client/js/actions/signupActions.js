@@ -1,7 +1,8 @@
-import axios from 'axios';
 
 export function userSignupRequest(userData){
-	return dispatch=>{
-		return axios.post('/routes/users',userData);
+       console.log("POST REQUEST FROM USER",userData);	
+		return {
+			type:"POST_REQUEST",
+			payload:userData
+		};
 	}
-}

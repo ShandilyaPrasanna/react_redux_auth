@@ -6,7 +6,9 @@ import classnames from 'classnames';
 import validateInput from './../../../server/Validations/Signupform';
 import TextField from './common/TextField';
 import {hashHistory} from 'react-router';
-
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {userSignupRequest} from './../actions/signupActions';
 
 class SignupForm extends React.Component{
 	constructor(props){
@@ -46,7 +48,7 @@ e.preventDefault();
 if(this.isValid())
 {
 this.setState({errors:{},isLoading:true});
-axios.post('/routes/users',this.state).then(()=>
+this.props.userSignupRequest(this.state).then(()=>
 {
 console.log("SUCCESS");
 hashHistory.push('/');
@@ -128,4 +130,8 @@ error={error.Password_Confirmation}/>
 	}
 }
 
-module.exports=SignupForm;
+function matchDispatchToProps(dispatch){
+	return bindActionCreators({userSignupRequest:userSignupRequest},dispatch)
+}
+
+export default connect((state)=>{return{}},matchDispatchToProps)(SignupForm);
